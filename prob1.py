@@ -26,7 +26,7 @@ try:
             read_available = stream.read_available
 
             # capture samples from stream
-            data, oflow = stream.read(read_available)
+            data, _ = stream.read(read_available)
 
             # push samples to queue
             samples.append(data)
