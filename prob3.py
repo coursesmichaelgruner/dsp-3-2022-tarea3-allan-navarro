@@ -6,30 +6,31 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sounddevice as sd
 
+fig, ax = plt.subplots() #plot
 
-fig, ax = plt.subplots()
 r = 1
 
-F = 440  # 440 Hz
+F0 = 440  # F0 = 440 Hz
 
-fs = F * 30  # sampling rate
+fs = F0 * 30  # sampling rate, high so that plot looks nice
 
-f = F/fs  # discrete frequency
+f = F0/fs  # discrete frequency
 
 samples = 3/(1/fs)  # 3s of sound
 
 w_0 = 2 * pi * f
 
-counter = 0
-init = r*sin(w_0)
+n = 0 # current n
+init = r*sin(w_0) #initial value r*sin(w_0)*d(n-1)
 
+# the unit delay blocks are implemented as queues of 1 max value
 q0 = queue.Queue(1)
 q1 = queue.Queue(1)
 q2 = queue.Queue(1)
 
-q0.put(init)
+q0.put(init) # insert the initial value 
 
-ys = []
+ys = [] # to store the output samples
 
 def get_value(q : queue.Queue):
     #retrieve value from queue, if empty return 0
@@ -38,8 +39,11 @@ def get_value(q : queue.Queue):
     except queue.Empty:
         return 0
 
-#loop to generate the result
-while counter < samples:
+'''
+loop to generate the output samples using the difference equation
+(view block diagram in pdf)
+'''
+while n < samples:
     d0 = get_value(q0) 
 
     d1 = get_value(q1)
@@ -55,7 +59,7 @@ while counter < samples:
     q1.put(y)
     q2.put(d1)
 
-    counter += 1
+    n += 1
 
     ys.append(y)
 
