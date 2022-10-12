@@ -13,3 +13,7 @@ Adicionalmente de pip:
 ## Problema 1
 `python3 prob1.py <Delay D en ms>` p.ej: `python3 prob1.py 500` 
 El programa retrasara la entrada del microfono en 500 ms
+
+## Problema 3
+`python3 prob3.py` 
+El programa generara un tono de 440 Hz, lo reproduce y lo grafica
