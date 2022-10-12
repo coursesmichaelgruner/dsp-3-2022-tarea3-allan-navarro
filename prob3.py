@@ -31,23 +31,22 @@ q0.put(init)
 
 ys = []
 
-while counter < samples:
+def get_value(q : queue.Queue):
+    #retrieve value from queue, if empty return 0
     try:
-        d0 = q0.get_nowait()
+        return q.get_nowait()
     except queue.Empty:
-        d0 = 0
+        return 0
 
-    try:
-        d1 = q1.get_nowait()
-    except queue.Empty:
-        d1 = 0
+#loop to generate the result
+while counter < samples:
+    d0 = get_value(q0) 
+
+    d1 = get_value(q1)
 
     m1 = 2*r*cos(w_0) * d1
 
-    try:
-        d2 = q2.get_nowait()
-    except queue.Empty:
-        d2 = 0
+    d2 = get_value(q2)
 
     m2 = -r * r * d2
 
